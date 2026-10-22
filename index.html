@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <title>IRA-ONE — Rename Faktur Otomatis</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128196;</text></svg>">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-logo" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        </span>
+        <div>
+          <h1>IRA-ONE</h1>
+          <p>Rename Faktur Otomatis &middot; Format: <code>DD - 4 Nomor Faktur - Kode PT</code></p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Unggah file faktur PDF">
+      <input type="file" id="fileInput" accept="application/pdf,.pdf" multiple hidden>
+      <div class="dz-icon" aria-hidden="true">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <p class="dz-title">Seret &amp; letakkan file faktur PDF di sini</p>
+      <p class="dz-sub">atau <span class="dz-browse">klik untuk memilih file</span> &mdash; bisa banyak sekaligus</p>
+    </section>
+
+    <section id="toolbar" class="toolbar" hidden>
+      <div class="toolbar-info">
+        <span id="fileCount">0 file</span>
+        <span id="readyCount" class="ready-pill">0 siap dikonversi</span>
+      </div>
+      <div class="toolbar-actions">
+        <button id="btnClear" class="btn btn-ghost" type="button">Bersihkan</button>
+        <button id="btnConvertAll" class="btn btn-primary" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+          Konversi Semua
+        </button>
+      </div>
+    </section>
+
+    <section id="fileList" class="file-list" aria-live="polite"></section>
+
+    <section id="emptyState" class="empty-state">
+      <p>Belum ada file. Unggah faktur PDF untuk mulai &mdash; metadata (tanggal, nomor faktur, nama PT) akan terbaca otomatis dan bisa diedit sebelum dikonversi.</p>
+    </section>
+  </main>
+
+  <div id="modal" class="modal-overlay" hidden>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <h2 id="modalTitle">Hasil Rename</h2>
+        <button id="modalClose" class="icon-btn" type="button" aria-label="Tutup">&times;</button>
+      </div>
+      <ul id="modalList" class="modal-list"></ul>
+      <div class="modal-foot">
+        <button id="btnCancel" class="btn btn-ghost" type="button">Batal</button>
+        <button id="btnPrint" class="btn btn-primary" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Cetak
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="previewModal" class="modal-overlay" hidden>
+    <div class="modal-dialog modal-dialog-wide" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+      <div class="modal-head">
+        <h2 id="previewTitle">Preview Faktur</h2>
+        <button id="previewClose" class="icon-btn" type="button" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="modal-body">
+        <iframe id="previewFrame" class="preview-frame" title="Preview PDF"></iframe>
+      </div>
+      <div class="modal-foot">
+        <span id="previewName" class="preview-file-name"></span>
+        <button id="previewCloseBtn" class="btn btn-ghost" type="button">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="vendor/pdf.min.js"></script>
+  <script src="vendor/pdf.worker.min.js"></script>
+  <script src="assets/parse.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
